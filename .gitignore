@@ -1,18 +1,57 @@
-Temp/
+# Unity generici
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
 UserSettings/
-Library/
-Logs/
-obj/
-Build/
-.vs/
-.vsconfig
+MemoryCaptures/
 *.csproj
+*.unityproj
 *.sln
-/.utmp
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+
+# Pacchetti
+Packages/packages-lock.json
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# Sistemi operativi
+.DS_Store
+Thumbs.db
+
+# File compressi o temporanei pesanti
 *.zip
-RuntimeActionBindings.json
-RuntimeActionBindings.json.meta
-ProjectSettings\Packages\com.unity.testtools.codecoverage\Settings.json
-PerformanceTestRun*.*
-StreamingAssets*
-!NativeSamples.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# File binari grandi che non devono stare in git
+*.apk
+*.exe
+*.iso
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.obb
+
+# File temporanei specifici o test
+test.apk
+prova.apk

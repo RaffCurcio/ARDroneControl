@@ -55,3 +55,4 @@ Thumbs.db
 # File temporanei specifici o test
 test.apk
 prova.apk
+*.apk

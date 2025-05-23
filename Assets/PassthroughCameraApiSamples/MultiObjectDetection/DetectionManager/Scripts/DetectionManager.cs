@@ -36,6 +36,8 @@ namespace PassthroughCameraSamples.MultiObjectDetection
         private bool m_isStarted = false;
         private bool m_isSentisReady = false;
         private float m_delayPauseBackTime = 0;
+        private float inferenceCooldown = 0.5f; // tempo tra una inference e l'altra
+        private float nextInferenceTime = 0f;
 
         #region Unity Functions
         private void Awake() => OVRManager.display.RecenteredPose += CleanMarkersCallBack;
@@ -58,7 +60,6 @@ namespace PassthroughCameraSamples.MultiObjectDetection
 
             if (!m_isStarted)
             {
-                // Manage the Initial Ui Menu
                 if (hasWebCamTextureData && m_isSentisReady)
                 {
                     m_uiMenuManager.OnInitialMenu(m_environmentRaycast.HasScenePermission());
@@ -92,9 +93,10 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             }
 
             // Run a new inference when the current inference finishes
-            if (!m_runInference.IsRunning())
+            if (!m_runInference.IsRunning() && Time.time >= nextInferenceTime)
             {
                 m_runInference.RunInference(m_webCamTextureManager.WebCamTexture);
+                nextInferenceTime = Time.time + inferenceCooldown;
             }
         }
         #endregion

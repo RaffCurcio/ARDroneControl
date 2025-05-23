@@ -1,5 +1,3 @@
-// Copyright (c) Meta Platforms, Inc. and affiliates.
-
 using System.Collections.Generic;
 using Meta.XR.Samples;
 using Unity.Sentis;
@@ -100,7 +98,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                 OnObjectsDetected?.Invoke(0);
                 return;
             }
-            var maxBoxes = Mathf.Min(boxesFound, 200);
+            var maxBoxes = Mathf.Min(boxesFound, 2);
 
             OnObjectsDetected?.Invoke(maxBoxes);
 
@@ -133,7 +131,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                     ClassName = classname,
                     Width = output[n, 2] * scaleX,
                     Height = output[n, 3] * scaleY,
-                    Label = $"Id: {n} Class: {classname} Center (px): {(int)centerX},{(int)centerY} Center (%): {perX:0.00},{perY:0.00}",
+                    Label = $"Drone {BoxDrawn.Count + 1}",
                     WorldPos = worldPos,
                 };
 
@@ -184,7 +182,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             //Set label text
             var label = panel.GetComponentInChildren<Text>();
             label.text = box.Label;
-            label.fontSize = 12;
+            label.fontSize = 20;
         }
 
         private GameObject CreateNewBox(Color color)

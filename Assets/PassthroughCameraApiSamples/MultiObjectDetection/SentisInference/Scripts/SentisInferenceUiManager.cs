@@ -4,6 +4,7 @@ using Unity.Sentis;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using PassthroughCameraSamples.MultiObjectDetection;
 
 namespace PassthroughCameraSamples.MultiObjectDetection
 {
@@ -50,6 +51,10 @@ namespace PassthroughCameraSamples.MultiObjectDetection
         private void Start()
         {
             m_displayLocation = m_displayImage.transform;
+            if (rayInteractableInstance != null)
+            {
+                rayInteractableInstance.SetActive(false);
+            }
         }
 
         public void OnObjectDetectionError()
@@ -108,6 +113,8 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                 var ray = PassthroughCameraUtils.ScreenPointToRayInWorld(CameraEye, centerPixel);
                 var worldPos = m_environmentRaycast.PlaceGameObjectByScreenPos(ray);
 
+                string stato = ChangeColorOnTrigger.IsDroneSelected ? "Selezionato" : "Non selezionato";
+
                 var box = new BoundingBox
                 {
                     CenterX = centerX,
@@ -115,7 +122,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                     ClassName = classname,
                     Width = output[n, 2] * scaleX,
                     Height = output[n, 3] * scaleY,
-                    Label = $"Drone {BoxDrawn.Count + 1}",
+                    Label = $"Drone {BoxDrawn.Count + 1} - {stato}",
                     WorldPos = worldPos,
                 };
 
@@ -137,6 +144,13 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             {
                 box?.SetActive(false);
             }
+
+            // 🔴 Disattiva anche il cubo Ray Interactable
+            if (rayInteractableInstance != null)
+            {
+                rayInteractableInstance.SetActive(false);
+            }
+
             BoxDrawn.Clear();
         }
 

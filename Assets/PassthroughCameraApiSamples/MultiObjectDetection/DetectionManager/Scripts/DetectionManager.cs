@@ -19,32 +19,33 @@ namespace PassthroughCameraSamples.MultiObjectDetection
         [Header("Ui references")]
         [SerializeField] private DetectionUiMenuManager m_uiMenuManager;
 
-        [Header("Placement configureation")]
-        [SerializeField] private GameObject m_spwanMarker;
-        [SerializeField] private EnvironmentRayCastSampleManager m_environmentRaycast;
-        [SerializeField] private float m_spawnDistance = 0.25f;
-        [SerializeField] private AudioSource m_placeSound;
-
         [Header("Sentis inference ref")]
         [SerializeField] private SentisInferenceRunManager m_runInference;
         [SerializeField] private SentisInferenceUiManager m_uiInference;
+        [SerializeField] private EnvironmentRayCastSampleManager m_environmentRaycast;
+
         [Space(10)]
         public UnityEvent<int> OnObjectsIdentified;
 
         private bool m_isPaused = true;
-        private List<GameObject> m_spwanedEntities = new();
         private bool m_isStarted = false;
         private bool m_isSentisReady = false;
         private float m_delayPauseBackTime = 0;
-        private float inferenceCooldown = 0.5f; // tempo tra una inference e l'altra
+        private float inferenceCooldown = 0.5f;
         private float nextInferenceTime = 0f;
 
         #region Unity Functions
-        private void Awake() => OVRManager.display.RecenteredPose += CleanMarkersCallBack;
+
+        private void Awake()
+        {
+            OVRManager.display.RecenteredPose += () =>
+            {
+                OnObjectsIdentified?.Invoke(-1);
+            };
+        }
 
         private IEnumerator Start()
         {
-            // Wait until Sentis model is loaded
             var sentisInference = FindAnyObjectByType<SentisInferenceRunManager>();
             while (!sentisInference.IsModelLoaded)
             {
@@ -55,7 +56,6 @@ namespace PassthroughCameraSamples.MultiObjectDetection
 
         private void Update()
         {
-            // Get the WebCamTexture CPU image
             var hasWebCamTextureData = m_webCamTextureManager.WebCamTexture != null;
 
             if (!m_isStarted)
@@ -68,12 +68,12 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             }
             else
             {
-                // Press A button to spawn 3d markers
+                // Pulsante A premuto dopo avvio per funzioni future (non più spawn marker)
                 if (OVRInput.GetUp(m_actionButton) && m_delayPauseBackTime <= 0)
                 {
-                    SpwanCurrentDetectedObjects();
+                    OnObjectsIdentified?.Invoke(0); // Azione alternativa, ora vuota
                 }
-                // Cooldown for the A button after return from the pause menu
+
                 m_delayPauseBackTime -= Time.deltaTime;
                 if (m_delayPauseBackTime <= 0)
                 {
@@ -81,119 +81,31 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                 }
             }
 
-            // Not start a sentis inference if the app is paused or we don't have a valid WebCamTexture
             if (m_isPaused || !hasWebCamTextureData)
             {
                 if (m_isPaused)
                 {
-                    // Set the delay time for the A button to return from the pause menu
                     m_delayPauseBackTime = 0.1f;
                 }
                 return;
             }
 
-            // Run a new inference when the current inference finishes
             if (!m_runInference.IsRunning() && Time.time >= nextInferenceTime)
             {
                 m_runInference.RunInference(m_webCamTextureManager.WebCamTexture);
                 nextInferenceTime = Time.time + inferenceCooldown;
             }
         }
-        #endregion
 
-        #region Marker Functions
-        /// <summary>
-        /// Clean 3d markers when the tracking space is re-centered.
-        /// </summary>
-        private void CleanMarkersCallBack()
-        {
-            foreach (var e in m_spwanedEntities)
-            {
-                Destroy(e, 0.1f);
-            }
-            m_spwanedEntities.Clear();
-            OnObjectsIdentified?.Invoke(-1);
-        }
-        /// <summary>
-        /// Spwan 3d markers for the detected objects
-        /// </summary>
-        private void SpwanCurrentDetectedObjects()
-        {
-            var count = 0;
-            foreach (var box in m_uiInference.BoxDrawn)
-            {
-                if (box.ClassName == "drone")
-                {
-                    if (PlaceMarkerUsingEnvironmentRaycast(box.WorldPos, box.ClassName))
-                    {
-                        count++;
-                        break; // mostra solo il primo marker
-                    }
-                }
-            }
-            if (count > 0)
-            {
-                // Play sound if a new marker is placed.
-                m_placeSound.Play();
-            }
-            OnObjectsIdentified?.Invoke(count);
-        }
-
-        /// <summary>
-        /// Place a marker using the environment raycast
-        /// </summary>
-        private bool PlaceMarkerUsingEnvironmentRaycast(Vector3? position, string className)
-        {
-            // Check if the position is valid
-            if (!position.HasValue)
-            {
-                return false;
-            }
-
-            // Check if you spanwed the same object before
-            var existMarker = false;
-            foreach (var e in m_spwanedEntities)
-            {
-                var markerClass = e.GetComponent<DetectionSpawnMarkerAnim>();
-                if (markerClass)
-                {
-                    var dist = Vector3.Distance(e.transform.position, position.Value);
-                    if (dist < m_spawnDistance && markerClass.GetYoloClassName() == className)
-                    {
-                        existMarker = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!existMarker)
-            {
-                // 🔥 Elimina tutti i marker precedenti
-                foreach (var e in m_spwanedEntities)
-                {
-                    Destroy(e);
-                }
-                m_spwanedEntities.Clear();
-
-                // 🆕 Crea il nuovo marker
-                var eMarker = Instantiate(m_spwanMarker);
-                m_spwanedEntities.Add(eMarker);
-
-                eMarker.transform.SetPositionAndRotation(position.Value, Quaternion.identity);
-                eMarker.GetComponent<DetectionSpawnMarkerAnim>().SetYoloClassName(className);
-            }
-            return !existMarker;
-        }
         #endregion
 
         #region Public Functions
-        /// <summary>
-        /// Pause the detection logic when the pause menu is active
-        /// </summary>
+
         public void OnPause(bool pause)
         {
             m_isPaused = pause;
         }
+
         #endregion
     }
 }

@@ -2378,6 +2378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5944cd0bcce94c548d418f3a3331bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMenuManager: {fileID: 6846995557286463107}
   droneIp: 192.168.10.1
   dronePort: 8889
   takeoffAction:
@@ -3719,8 +3720,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ovrCameraRig: {fileID: 1629220521}
-  _leftHand: {fileID: 0}
-  _rightHand: {fileID: 0}
+  _leftHand: {fileID: 2044978241}
+  _rightHand: {fileID: 1407259962}
   _requireOvrHands: 1
 --- !u!114 &1639561046
 MonoBehaviour:
@@ -5325,6 +5326,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 245807416011724288, guid: c04b8183f83c54141b0deaa7f0355570, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d9a4cffd159fd47e0878470ba4c7d3c3, type: 2}
     - target: {fileID: 264009497078485757, guid: c04b8183f83c54141b0deaa7f0355570, type: 3}
       propertyPath: m_Name
       value: '[BuildingBlock] Ray Interaction'

@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using PassthroughCameraSamples.MultiObjectDetection;
 
 public class UdpSender : MonoBehaviour
 {
     private DroneCommandSender _commandSender;
     private const float SendInterval = 0.05f; // 50 ms
     private float _lastSendTime;
+
+    [Header("App Control")]
+    public DetectionUiMenuManager uiMenuManager;
 
     [Header("Connection")]
     public string droneIp = "192.168.10.1";
@@ -60,6 +64,10 @@ public class UdpSender : MonoBehaviour
 
     private void Update()
     {
+        // ✅ Se il drone non è selezionato, esci subito
+        if (!ChangeColorOnTrigger.IsDroneSelected)
+            return;
+
         if (takeoffAction.action.triggered)
         {
             SendCommand("takeoff");

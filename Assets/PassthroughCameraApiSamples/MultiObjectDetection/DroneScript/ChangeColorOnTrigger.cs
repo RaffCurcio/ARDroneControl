@@ -4,31 +4,23 @@ public class ChangeColorOnTrigger : MonoBehaviour
 {
     public Transform rightController;
     public float rayLength = 60f;
-    public Color selectedColor = Color.green;
 
-    private Renderer rend;
-    private Color originalColor;
     private bool isSelected = false;
 
     private static ChangeColorOnTrigger currentSelected = null;
-
-    private void Start()
-    {
-        rend = GetComponent<Renderer>();
-        rend.material = new Material(rend.material); // importantissimo: crea un'istanza del materiale
-        originalColor = rend.material.color;
-    }
+    public static bool IsDroneSelected => currentSelected != null && currentSelected.isSelected;
 
     private void Update()
     {
-        if (rightController == null || rend == null) return;
+        if (rightController == null) return;
 
         Ray ray = new Ray(rightController.position, rightController.forward);
+        Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.green); // visualizza il raycast in editor
 
         if (Physics.Raycast(ray, out RaycastHit hit, rayLength))
         {
             if (hit.collider.transform.IsChildOf(transform) &&
-                OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.Active))
+                OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             {
                 if (isSelected)
                 {
@@ -51,14 +43,11 @@ public class ChangeColorOnTrigger : MonoBehaviour
 
     private void Select()
     {
-        rend.material.color = selectedColor;
         isSelected = true;
-
     }
 
     private void Deselect()
     {
-        rend.material.color = originalColor;
         isSelected = false;
     }
 

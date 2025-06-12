@@ -5718,7 +5718,7 @@ PrefabInstance:
     - target: {fileID: 2681575481727882275, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
       propertyPath: OnnxModel
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 7fa8e54352d964cc48d399a748b462ac, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: c5d71a6fb7d9347859592a8db87a72fb, type: 3}
     - target: {fileID: 2681575481727882275, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
       propertyPath: m_backend
       value: 512
@@ -5734,10 +5734,14 @@ PrefabInstance:
     - target: {fileID: 2681575481727882275, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
       propertyPath: m_sentisModel
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: f73159fa2d0be49c297b836b0de3e16e, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: 770309f37979b48d69447b730ec23d36, type: 3}
     - target: {fileID: 2681575481727882275, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
       propertyPath: m_layersPerFrame
-      value: 30
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681575481727882275, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
+      propertyPath: m_scoreThreshold
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4976470222712890361, guid: 927c1b782bb796b4b9b433d533cbccca, type: 3}
       propertyPath: m_webCamTextureManager

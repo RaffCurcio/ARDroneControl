@@ -2,12 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using PassthroughCameraSamples.MultiObjectDetection;
+using System.Collections.Concurrent;
+using System.Threading;
 
 public class UdpSender : MonoBehaviour
 {
     private DroneCommandSender _commandSender;
     private const float SendInterval = 0.05f; // 50 ms
     private float _lastSendTime;
+    private Thread _commandThread;
+    private bool _isRunning = false;
+    private ConcurrentQueue<string> _commandQueue = new();
+
 
     [Header("App Control")]
     public DetectionUiMenuManager uiMenuManager;
@@ -37,6 +43,12 @@ public class UdpSender : MonoBehaviour
     {
         _commandSender = new DroneCommandSender(droneIp, dronePort);
         _commandSender.Send("command"); // inizializza modalità SDK
+
+        // Avvia thread per invio comandi
+        _isRunning = true;
+        _commandThread = new Thread(CommandLoop);
+        _commandThread.IsBackground = true;
+        _commandThread.Start();
     }
 
     private void OnEnable()
@@ -59,12 +71,13 @@ public class UdpSender : MonoBehaviour
 
     private void OnDestroy()
     {
+        _isRunning = false;
+        _commandThread?.Join();
         _commandSender?.Close();
     }
 
     private void Update()
     {
-        // ✅ Se il drone non è selezionato, esci subito
         if (!ChangeColorOnTrigger.IsDroneSelected)
             return;
 
@@ -166,7 +179,22 @@ public class UdpSender : MonoBehaviour
 
     private void SendCommand(string command)
     {
-        Debug.Log("Comando inviato: " + command);
-        _commandSender.Send(command);
+        Debug.Log("Queued command: " + command);
+        _commandQueue.Enqueue(command);
     }
+
+
+    private void CommandLoop()
+    {
+        while (_isRunning)
+        {
+            if (_commandQueue.TryDequeue(out var cmd))
+            {
+                _commandSender.Send(cmd);
+            }
+
+            Thread.Sleep((int)(SendInterval * 1000)); // 50 ms
+        }
+    }
+
 }

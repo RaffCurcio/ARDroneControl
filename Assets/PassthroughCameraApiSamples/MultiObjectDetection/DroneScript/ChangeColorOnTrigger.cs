@@ -1,4 +1,5 @@
 using UnityEngine;
+using PassthroughCameraSamples.MultiObjectDetection;
 
 public class ChangeColorOnTrigger : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class ChangeColorOnTrigger : MonoBehaviour
                     Select();
                     currentSelected = this;
                 }
+                FindObjectOfType<SentisInferenceUiManager>()?.RefreshBoxLabels();
             }
         }
     }

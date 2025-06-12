@@ -31,7 +31,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
         private bool m_isStarted = false;
         private bool m_isSentisReady = false;
         private float m_delayPauseBackTime = 0;
-        private float inferenceCooldown = 0.5f;
+        private float inferenceCooldown = 3f;
         private float nextInferenceTime = 0f;
 
         #region Unity Functions
@@ -46,6 +46,8 @@ namespace PassthroughCameraSamples.MultiObjectDetection
 
         private IEnumerator Start()
         {
+            Application.targetFrameRate = 90;
+
             var sentisInference = FindAnyObjectByType<SentisInferenceRunManager>();
             while (!sentisInference.IsModelLoaded)
             {

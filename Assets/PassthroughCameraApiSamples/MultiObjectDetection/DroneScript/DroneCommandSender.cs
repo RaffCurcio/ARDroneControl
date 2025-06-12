@@ -6,7 +6,7 @@ public class DroneCommandSender
     private readonly UdpClient _udpClient;
     private readonly string _ip;
     private readonly int _port;
-    private readonly byte[] _buffer = new byte[256]; // Riutilizzabile
+    private readonly byte[] _buffer = new byte[256];
 
     public DroneCommandSender(string ip, int port)
     {

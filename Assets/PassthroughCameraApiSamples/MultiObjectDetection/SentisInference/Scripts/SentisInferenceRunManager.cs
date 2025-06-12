@@ -15,7 +15,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
         [SerializeField] private Vector2Int m_inputSize = new(640, 640);
         [SerializeField] private BackendType m_backend = BackendType.CPU;
         [SerializeField] private ModelAsset m_sentisModel;
-        [SerializeField] private int m_layersPerFrame = 25;
+        [SerializeField] private int m_layersPerFrame = 100;
         [SerializeField] private TextAsset m_labelsAsset;
         public bool IsModelLoaded { get; private set; } = false;
 

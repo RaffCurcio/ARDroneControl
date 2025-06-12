@@ -216,5 +216,25 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             m_boxPool.Add(panel);
             return panel;
         }
+
+        public void RefreshBoxLabels()
+        {
+            for (int i = 0; i < BoxDrawn.Count && i < m_boxPool.Count; i++)
+            {
+                var stato = ChangeColorOnTrigger.IsDroneSelected ? "Selezionato" : "Non selezionato";
+
+                // 🛠 Copia, modifica e reassegna l'intera struct
+                var box = BoxDrawn[i];
+                box.Label = $"Drone {i + 1} - {stato}";
+                BoxDrawn[i] = box;
+
+                // 🔁 Aggiorna il testo visivo
+                var textComponent = m_boxPool[i].GetComponentInChildren<UnityEngine.UI.Text>();
+                if (textComponent != null)
+                {
+                    textComponent.text = box.Label;
+                }
+            }
+        }
     }
 }

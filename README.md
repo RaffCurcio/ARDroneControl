@@ -117,7 +117,7 @@ L’interazione è naturale e intuitiva: l’utente può selezionare visivamente
 *(Inserisci i link ai video dimostrativi quando disponibili)*
 
 - ▶️ **Selezione e decollo**  
-![Video dimostrativo](.Media/sing.gif)
+![Video dimostrativo](Media/sing.gif)
 
 - ▶️ **Controllo simultaneo**  
 [Guarda il video](./Media/cont.mp4)

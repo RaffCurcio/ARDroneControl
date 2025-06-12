@@ -120,7 +120,7 @@ L’interazione è naturale e intuitiva: l’utente può selezionare visivamente
 ![Video dimostrativo](Media/sing.gif)
 
 - ▶️ **Controllo simultaneo**  
-[Guarda il video](./Media/cont.mp4)
+![Video dimostrativo](Media/cont.gif)
 ---
 
 

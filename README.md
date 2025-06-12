@@ -114,8 +114,6 @@ L’interazione è naturale e intuitiva: l’utente può selezionare visivamente
 
 ## Video dimostrativi
 
-*(Inserisci i link ai video dimostrativi quando disponibili)*
-
 - ▶️ **Selezione e decollo**  
 ![Video dimostrativo](Media/sing.gif)
 

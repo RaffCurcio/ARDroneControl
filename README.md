@@ -114,9 +114,13 @@ L’interazione è naturale e intuitiva: l’utente può selezionare visivamente
 
 ## Video dimostrativi
 
+<div align="center">
+
 | ![Selezione e decollo](Media/sing.gif) | ![Controllo simultaneo](Media/cont.gif) |
 |:--------------------------------------:|:----------------------------------------:|
 | **Selezione e decollo**               | **Controllo simultaneo**                 |
+
+</div>
 
 
 
